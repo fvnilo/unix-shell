@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"strings"
 )
 
@@ -41,11 +42,31 @@ func execCommand(input string) error {
 	return nil
 }
 
+func preparePrompt() (string, error) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return "", err
+	}
+
+	currentUser, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%v@%v#", currentUser.Username, hostname), nil
+}
+
 func main() {
+	prompt, err := preparePrompt()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "An error occured while preparing the prompt")
+		panic(err)
+	}
+
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
-		fmt.Print("> ")
+		fmt.Print(prompt)
 
 		input, err := reader.ReadString('\n')
 		if err != nil {

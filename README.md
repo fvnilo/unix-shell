@@ -17,6 +17,5 @@ It's a good way to learn about many concepts such as:
 
 ## TODOs
 
-- Add the machine name in the prompt
-- Add the `cwd` in the prompt
 - Support navigation in past commands
+- Support Ctrl + L for clearing
